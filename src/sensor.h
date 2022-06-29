@@ -8,14 +8,9 @@ public:
         _pin = pin;
     }
 
-    uint16_t getLevel()
+    int getLevel()
     {
         return analogRead(_pin);
-    }
-
-    bool isFlood(uint16_t floodLevel)
-    {
-        return getLevel() > floodLevel;
     }
 
 private:
