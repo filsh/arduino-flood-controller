@@ -3,9 +3,10 @@
 class Sensor
 {
 public:
-    Sensor(byte pinSensor, byte pinLed, uint32_t floodLevel)
+    Sensor(byte pinSensor, byte pinCheck, byte pinLed, uint32_t floodLevel)
     {
         _pinLed = pinLed;
+        _pinCheck = pinCheck;
         _pinSensor = pinSensor;
         _floodLevel = floodLevel;
     }
@@ -13,35 +14,46 @@ public:
     void setup()
     {
         pinMode(_pinLed, OUTPUT);
-    }
+        pinMode(_pinCheck, INPUT);
 
-    void reset()
-    {
+        digitalWrite(_pinLed, HIGH);
+        delay(200);
         digitalWrite(_pinLed, LOW);
+
+        _connected = digitalRead(_pinCheck);
     }
 
     void loop()
     {
-        _level = analogRead(_pinSensor);
-
-        if (isFlood()) {
+        if (isFlood() || isBreakLine()) {
             digitalWrite(_pinLed, HIGH);
         }
     }
 
-    int getLevel()
+    uint32_t getLevel()
     {
         return analogRead(_pinSensor);
     }
 
     bool isFlood()
     {
-        return _level > _floodLevel;
+        return getLevel() < _floodLevel;
+    }
+
+    bool isBreakLine()
+    {
+        return isConnected() && digitalRead(_pinCheck) == 0;
+    }
+
+    bool isConnected()
+    {
+        return _connected;
     }
 
 private:
     byte _pinLed;
+    byte _pinCheck;
     byte _pinSensor;
-    uint32_t _level;
     uint32_t _floodLevel;
+    bool _connected;
 };
