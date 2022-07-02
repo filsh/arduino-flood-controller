@@ -8,11 +8,6 @@
 #define PIN_SENSOR_LED_3 8
 #define PIN_SENSOR_LED_4 9
 
-#define PIN_SENSOR_CHECK_1 10
-#define PIN_SENSOR_CHECK_2 11
-#define PIN_SENSOR_CHECK_3 12
-#define PIN_SENSOR_CHECK_4 13
-
 #define PIN_BUTTON A0
 
 #define PIN_SENSOR_1 A1

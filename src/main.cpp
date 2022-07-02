@@ -12,10 +12,10 @@ Button open(PIN_BUTTON, 300, 400);
 Button close(PIN_BUTTON, 400, 600);
 
 Sensor sensors[] = {
-  Sensor(PIN_SENSOR_1, PIN_SENSOR_CHECK_1, PIN_SENSOR_LED_1, FLOOD_LEVEL),
-  Sensor(PIN_SENSOR_2, PIN_SENSOR_CHECK_2, PIN_SENSOR_LED_2, FLOOD_LEVEL),
-  // Sensor(PIN_SENSOR_3, PIN_SENSOR_CHECK_3, PIN_SENSOR_LED_3, FLOOD_LEVEL),
-  // Sensor(PIN_SENSOR_4, PIN_SENSOR_CHECK_4, PIN_SENSOR_LED_4, FLOOD_LEVEL)
+  Sensor(PIN_SENSOR_1, PIN_SENSOR_LED_1, FLOOD_LEVEL),
+  Sensor(PIN_SENSOR_2, PIN_SENSOR_LED_2, FLOOD_LEVEL),
+  // Sensor(PIN_SENSOR_3, PIN_SENSOR_LED_3, FLOOD_LEVEL),
+  // Sensor(PIN_SENSOR_4, PIN_SENSOR_LED_4, FLOOD_LEVEL)
 };
 
 Relay relay(PIN_RELAY, INITIAL_STATE);
@@ -46,10 +46,6 @@ void loop()
   for (byte i = 0; i < (sizeof(sensors) / sizeof(sensors[0])); i++) {
     Sensor sensor = sensors[i];
 
-    if (!sensor.isConnected()) {
-      continue;
-    }
-
     sensor.loop();
 
     if (sensor.isFlood()) {
@@ -60,15 +56,6 @@ void loop()
       Serial.print(i);
       Serial.print("], level: [");
       Serial.print(sensor.getLevel());
-      Serial.println("]");
-
-      Serial.println("Relay close");
-    } else if (sensor.isBreakLine()) {
-      relay.close();
-      alarm.beep();
-
-      Serial.print("Break line detected on sensor: [");
-      Serial.print(i);
       Serial.println("]");
 
       Serial.println("Relay close");
