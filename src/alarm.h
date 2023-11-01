@@ -32,6 +32,12 @@ public:
         _state = HIGH;
     }
 
+    void beepOnce()
+    {
+        tone(_buzzer, _frequency, _duration);
+        digitalWrite(_led, _ledState);
+    }
+
     void stop()
     {
         _state = LOW;

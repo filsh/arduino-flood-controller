@@ -12,10 +12,10 @@ Button open(PIN_BUTTON, 300, 400);
 Button close(PIN_BUTTON, 400, 600);
 
 Sensor sensors[] = {
-  Sensor(PIN_SENSOR_1, PIN_SENSOR_LED_1, FLOOD_LEVEL),
-  Sensor(PIN_SENSOR_2, PIN_SENSOR_LED_2, FLOOD_LEVEL),
-  Sensor(PIN_SENSOR_3, PIN_SENSOR_LED_3, FLOOD_LEVEL),
-  Sensor(PIN_SENSOR_4, PIN_SENSOR_LED_4, FLOOD_LEVEL)
+  Sensor(PIN_SENSOR_1, PIN_SENSOR_LED_1, FLOOD_LEVEL, SENSOR_DELAY),
+  Sensor(PIN_SENSOR_2, PIN_SENSOR_LED_2, FLOOD_LEVEL, SENSOR_DELAY),
+  Sensor(PIN_SENSOR_3, PIN_SENSOR_LED_3, FLOOD_LEVEL, SENSOR_DELAY),
+  Sensor(PIN_SENSOR_4, PIN_SENSOR_LED_4, FLOOD_LEVEL, SENSOR_DELAY)
 };
 
 Relay relay(PIN_RELAY, INITIAL_STATE);
@@ -31,6 +31,8 @@ void setup()
 
   for (byte i = 0; i < (sizeof(sensors) / sizeof(sensors[0])); i++) {
     sensors[i].setup();
+    alarm.beepOnce();
+    delay(300);
   }
 
   pinMode(PIN_STATE_LED, OUTPUT);
@@ -44,18 +46,16 @@ void loop()
   relay.loop();
   
   for (byte i = 0; i < (sizeof(sensors) / sizeof(sensors[0])); i++) {
-    Sensor sensor = sensors[i];
+    sensors[i].loop();
 
-    sensor.loop();
-
-    if (sensor.isFlood()) {
+    if (sensors[i].isFloodDetected()) {
       relay.close();
       alarm.beep();
 
       Serial.print("Flood detected on sensor: [");
       Serial.print(i);
-      Serial.print("], level: [");
-      Serial.print(sensor.getLevel());
+      Serial.print("], sensor value: [");
+      Serial.print(sensors[i].getSensorValue());
       Serial.println("]");
 
       Serial.println("Relay close");
