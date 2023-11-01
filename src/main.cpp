@@ -18,7 +18,7 @@ Sensor sensors[] = {
   Sensor(PIN_SENSOR_4, PIN_SENSOR_LED_4, FLOOD_LEVEL, SENSOR_DELAY)
 };
 
-Relay relay(PIN_RELAY, INITIAL_STATE);
+Relay relay(PIN_RELAY, PIN_STATE_LED, INITIAL_STATE);
 
 void setup()
 {
@@ -79,6 +79,4 @@ void loop()
       relay.close();
     }
   }
-
-  digitalWrite(PIN_STATE_LED, relay.getState());
 }
