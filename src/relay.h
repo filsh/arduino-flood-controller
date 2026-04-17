@@ -3,21 +3,24 @@
 class Relay
 {
 public:
-    Relay(byte pin, bool state)
+    Relay(byte pinRelay, byte pinLed, bool state)
     {
-        _pin = pin;
+        _pinRelay = pinRelay;
+        _pinLed = pinLed;
         _state = state;
     }
 
     void setup()
     {
-        pinMode(_pin, OUTPUT);
-        digitalWrite(_pin, _state);
+        pinMode(_pinRelay, OUTPUT);
+        digitalWrite(_pinRelay, _state);
+        digitalWrite(_pinLed, _state);
     }
 
     void loop()
     {
-        digitalWrite(_pin, _state);
+        digitalWrite(_pinRelay, _state);
+        digitalWrite(_pinLed, _state);
     }
 
     void open()
@@ -40,17 +43,8 @@ public:
         return _state == HIGH;
     }
 
-    bool getState()
-    {
-        return _state;
-    }
-
-    void setState(bool state)
-    {
-        _state = state;
-    }
-
 private:
-    byte _pin;
+    byte _pinRelay;
+    byte _pinLed;
     bool _state = LOW;
 };
